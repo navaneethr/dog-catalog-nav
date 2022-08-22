@@ -44,3 +44,36 @@
 .dog-images-container img {
   border-radius: 12px;
 }
+
+.heart-button {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.active svg {
+  fill: darkred;
+}
+
+.heart-button:hover svg {
+  cursor: pointer;
+}
+
+.compare-container {
+  position: fixed;
+  bottom: 0;
+  min-width: 300px;
+  height: 150px;
+  width: 30vw;
+  left: 35vw;
+  right: 35vw;
+  z-index: 2;
+  background: #393939;
+  border-radius: 8px 8px 0 0;
+  padding: 12px;
+}
+
+.minimize {
+  height: 30px;
+}

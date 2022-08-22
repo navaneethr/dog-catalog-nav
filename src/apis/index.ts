@@ -1,6 +1,6 @@
-import postFavorites from "./postFavorite";
+import postFavorite from "./postFavorite";
 import postVote from "./postVote";
 import removeFavorite from "./removeFavorite";
 
 
-export {postFavorites, postVote, removeFavorite};
+export {postFavorite, postVote, removeFavorite};

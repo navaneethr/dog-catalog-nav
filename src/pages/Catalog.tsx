@@ -2,96 +2,118 @@ import React, {useContext, useState} from 'react';
 import {DogsContext} from "../providers/DogsController";
 import {
     Button,
-    View,
     Flex,
     Grid,
     repeat,
     ProgressCircle,
-    Image,
-    Checkbox,
     ActionButton,
     Heading,
-    Switch
+    Provider, View
 } from '@adobe/react-spectrum';
-import Heart from '@spectrum-icons/workflow/Heart';
-import {useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {IDType} from "../utils/types";
+import {postFavorite, removeFavorite} from "../apis";
+import DogInfoComponent from "../componets/DogInfoComponent";
+import DogFavInfoComponent from "../componets/DogFavInfoComponent";
+import Minimize from '@spectrum-icons/workflow/Minimize';
 
 function Catalog() {
-    const {data, triggerPageData, currentPage, loading} = useContext(DogsContext);
+    const {
+        data,
+        triggerPageData,
+        currentPage,
+        loading,
+        favorites,
+        refetchFavorites,
+        favMode
+    } = useContext(DogsContext);
     const navigate = useNavigate();
     const [compareDogsList, setCompareDogsList] = useState<Array<IDType>>([])
+    const [loadingState, setLoadingState] = useState(false);
+    const [minimize, setMinimize] = useState(false);
 
     const onCompareClicked = (id: IDType, checked: boolean) => {
-        console.log(checked)
-        if(checked) {
+        if (checked) {
             setCompareDogsList([...compareDogsList, id]);
         } else {
             const clonedCompareList = [...compareDogsList];
             const index = clonedCompareList.indexOf(id);
-            if (index > -1) { // only splice array when item is found
-                clonedCompareList.splice(index, 1); // 2nd parameter means remove one item only
+            if (index > -1) {
+                clonedCompareList.splice(index, 1);
             }
             setCompareDogsList(clonedCompareList);
         }
     }
 
+    const favoriteImage = async (imageId: IDType) => {
+        setLoadingState(true)
+        await postFavorite(imageId);
+        refetchFavorites();
+        setLoadingState(false)
+    }
+
+    const removeFavoriteImage = async (imageId: IDType) => {
+        setLoadingState(true)
+        await removeFavorite(imageId);
+        refetchFavorites();
+        setLoadingState(false)
+    }
+
+    const dogData = favMode ? favorites : data
+
+
     return (
         <div>
-            {compareDogsList.length > 0 && <Heading>Selected {compareDogsList.length} of 4</Heading>}
-            {compareDogsList.length > 1 && <ActionButton onPress={() => navigate(`/dogs/${(compareDogsList).toString()}`)}>Compare</ActionButton>}
-            <Switch>Show All Favorites</Switch>
             <Grid columns={repeat('auto-fit', 'size-3600')}
-                         autoRows="size-3600"
-                         justifyContent="center"
-                         gap="size-200">
+                  autoRows="size-3600"
+                  justifyContent="center"
+                  gap="size-200">
                 {
-                    data.map((d, i) => {
-                        const countries: any = {
-                            AU: 'Australia',
-                            US: 'United States of America'
-                        }
-                        return(
-                            <View
-                                key={i}
-                                borderWidth="thin"
-                                borderColor="dark"
-                                borderRadius="medium"
-                                padding="size-250"
-                            >
-                                <div className="dog-images-container">
-                                    <Flex width="100%" height="100px" justifyContent={"center"} margin={"static-size-100"}>
-                                        <Image
-                                            src={d.image.url}
-                                            alt="Eiffel Tower at sunset"
-                                            objectFit="cover"
-                                        />
-                                    </Flex>
-                                </div>
-                                <Flex direction={'column'}>
-                                    <span>{d.name}</span>
-                                    <span>{countries[d.country_code] || 'Unknown'}</span>
-                                    <Checkbox isDisabled={compareDogsList.length>3 && !compareDogsList.includes(d.id)} isSelected={compareDogsList.includes(d.id)} onChange={(checked) => onCompareClicked(d.id, checked)}>Compare</Checkbox>
-                                    <Flex>
-                                        <Button variant="cta" onPress={() => navigate(`/dogs/${([d.id]).toString()}`)}>View</Button>
-                                        <div role={'button'} onClick={() => console.log(d.id)}>
-                                            <Heart color={'negative'}/>
-                                        </div>
-                                    </Flex>
-                                </Flex>
-                            </View>
-                        )
+                    dogData.map((info, key) => {
+                        return !favMode ? (
+                                <DogInfoComponent
+                                    key={key}
+                                    data={info}
+                                    favoriteImages={favorites}
+                                    compareDogsList={compareDogsList}
+                                    onCompareClicked={onCompareClicked}
+                                    favoriteImage={favoriteImage}
+                                    removeFavoriteImage={removeFavoriteImage}
+                                    loading={loadingState}
+                                />
+                            ) :
+                            <DogFavInfoComponent
+                                key={key}
+                                dogData={info}
+                                favoriteImages={favorites}
+                            />
                     })
                 }
             </Grid>
             <Flex justifyContent={"center"} margin={"static-size-200"}>
                 {
-                    loading ? <ProgressCircle aria-label="Loading…" value={50} isIndeterminate/> :
+                    (loading) ? <ProgressCircle aria-label="Loading…" value={50} isIndeterminate/> : (!favMode &&
                         <Button margin={"size-200"} variant="primary" onPress={() => triggerPageData(currentPage + 1)}>
                             Load More
-                        </Button>
+                        </Button>)
                 }
             </Flex>
+            {compareDogsList.length > 0 && !favMode && (
+                <div className={`compare-container ${minimize ? 'minimize' : ''}`}>
+                    <Provider colorScheme="dark">
+                        <Flex justifyContent={minimize ? "space-between" : "end"} alignItems={"center"}>
+                            {minimize && <span>Expand to Compare</span>}
+                            <ActionButton onPress={() => { setMinimize(!minimize)}}><Minimize  height={'16px'}/></ActionButton>
+                        </Flex>
+                        <View padding={"static-size-200"}>
+                            {compareDogsList.length > 0 && <Heading>Selected {compareDogsList.length} of 4</Heading>}
+                            {compareDogsList.length > 1 &&
+                            <ActionButton onPress={() => navigate(`/dogs/${(compareDogsList).toString()}`)}>Compare</ActionButton>}
+                        </View>
+                    </Provider>
+                </div>
+            )}
+
         </div>
     );
 }

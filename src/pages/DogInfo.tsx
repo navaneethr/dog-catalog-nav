@@ -2,7 +2,8 @@ import React from 'react';
 import {useDogInfo, useSpecificImage} from "../hooks";
 import { useParams, useNavigate } from 'react-router-dom';
 import {IDType} from "../utils/types";
-import {Flex, Image, ProgressCircle, Heading, Breadcrumbs, Item} from "@adobe/react-spectrum";
+import {Flex, Image, ProgressCircle, Heading, Breadcrumbs, Item, } from "@adobe/react-spectrum";
+
 import {titleCase} from "../utils/functions";
 import DogDetailsComponent from "../componets/DogDetailsComponent";
 
@@ -18,9 +19,9 @@ function DogInfo() {
                 <Item key="/">Home</Item>
                 <Item key={`/dogs/${params.dogId}`}>{breadCrumbText}</Item>
             </Breadcrumbs>
-            <Flex>
+            <Flex direction={"column"}>
                 {
-                    ids.map((id) => {
+                    ids.map((id, key) => {
                         return(
                             <DogDetailsComponent dogId={id as IDType}/>
                         )

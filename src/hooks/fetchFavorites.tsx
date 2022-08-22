@@ -16,7 +16,7 @@ function useFavorites() {
         axios.get('https://api.thedogapi.com/v1/favourites', httpHeaders).then((res) => {
             setLoading(false);
             console.log(res);
-            setData([...data, ...res.data]);
+            setData(res.data);
         }).catch((err) => {
             setLoading(false);
             setData(err.message);
@@ -27,7 +27,7 @@ function useFavorites() {
         fetchApi();
     }, []);
 
-    return [ loading, data ]
+    return [ data, loading, fetchApi]
 }
 
 export default useFavorites;
