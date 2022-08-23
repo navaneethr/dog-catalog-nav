@@ -1,30 +1,31 @@
+const _ = require('lodash');
 import {Flex, Switch, View, SearchField, Heading} from "@adobe/react-spectrum";
 import React, {useContext, useEffect, useState} from "react";
 import {DogsContext} from "../providers/DogsController";
 import {useNavigate} from "react-router-dom";
-const _ = require('lodash');
 import Code from '@spectrum-icons/workflow/Code';
+
 export const NavBar = ({
-   favMode,
-   setFavoriteMode,
-   dark,
-   setDark,
+                           favMode,
+                           setFavoriteMode,
+                           dark,
+                           setDark,
                            searchText,
-    setSearchText
-}: { favMode: boolean; setFavoriteMode: (bool: boolean) => void, dark: boolean, setDark: (bool: boolean) => void, searchText: string, setSearchText: (val: string) => void,}) => {
-    const { filterResults, searchData, clearSearchData } = useContext(DogsContext);
+                           setSearchText
+                       }: { favMode: boolean; setFavoriteMode: (bool: boolean) => void, dark: boolean, setDark: (bool: boolean) => void, searchText: string, setSearchText: (val: string) => void, }) => {
+    const {filterResults, searchData, clearSearchData} = useContext(DogsContext);
     const navigate = useNavigate();
     useEffect(() => {
-        if(!_.isEmpty(searchData) && Array.isArray(searchData)) {
+        if (!_.isEmpty(searchData) && Array.isArray(searchData)) {
             navigate(`/dogs/${(searchData.map((d) => d.id)).toString()}/search`)
         }
     }, [searchData])
 
     useEffect(() => {
-        if(!searchText) {
+        if (!searchText) {
             clearSearchData();
         }
-    },[searchText])
+    }, [searchText])
 
     return (
         <View zIndex={1} backgroundColor={dark ? "static-black" : 'static-gray-300'} position={'fixed'} left={0}
@@ -34,7 +35,10 @@ export const NavBar = ({
                     <SearchField
                         onClear={() => setSearchText('')}
                         onChange={setSearchText}
-                        onSubmit={(term) => {filterResults(term); clearSearchData();}}
+                        onSubmit={(term) => {
+                            filterResults(term);
+                            clearSearchData();
+                        }}
                         value={searchText}
                         width="size-4600"
                         marginStart={"size-200"}
