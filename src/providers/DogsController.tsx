@@ -23,7 +23,7 @@ const defaultValues = {
         bredFor: []
     },
     applyFilters: () => null,
-    setFilters: () => null
+    setFilters: () => null,
 }
 
 export const DogsContext = createContext<DogsContextType>(defaultValues);
@@ -39,7 +39,7 @@ function DogsController(props: DefaultDogControllerPropsType) {
     // useFavorites Hook executes a promise and returns favorites for the user
     const [favorites, favoritesLoading, refetchFavorites] = useFavorites();
     // useDogsList Hook executes a promise and returns list of dog breed information when provided with a page number
-    const [loading, data, applyFilters] = useDogsList(page);
+    const [loading, data, applyFilters] = useDogsList(page, props.filters);
     // useSearchResults takes a searchQuery for a param and returns relevant data
     const [searchResultsLoading, searchData, clearSearchData] = useSearchResults(searchQuery);
 
@@ -61,7 +61,7 @@ function DogsController(props: DefaultDogControllerPropsType) {
             clearSearchText: props.clearSearchText,
             filters: props.filters,
             applyFilters,
-            setFilters: props.setFilters
+            setFilters: props.setFilters,
         }}>
             {props.children}
         </DogsContext.Provider>

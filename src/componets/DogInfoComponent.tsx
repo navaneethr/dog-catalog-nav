@@ -57,7 +57,6 @@ function DogInfoComponent({
     }
     const [imgData] = useSpecificImage(data.image_id);
 
-    console.log(imgData)
 
     return (
         <View

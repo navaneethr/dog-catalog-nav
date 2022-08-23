@@ -31,7 +31,7 @@ function Catalog() {
         refetchFavorites,
         favMode,
         applyFilters,
-        setFilters
+        filters,
     } = useContext(DogsContext);
     const navigate = useNavigate();
     const [compareDogsList, setCompareDogsList] = useState<Array<IDType>>([])
@@ -95,9 +95,8 @@ function Catalog() {
                 {
                     (loading) ? <ProgressCircle aria-label="Loading…" value={50} isIndeterminate/> : (!favMode &&
                         <Button margin={"size-200"} variant="primary" onPress={() => {
-                            applyFilters({bredFor: [], country: []})
-                            setFilters({bredFor: [], country: []})
                             triggerPageData(currentPage + 1);
+                            applyFilters(filters);
                         }}>
                             Load More
                         </Button>)
