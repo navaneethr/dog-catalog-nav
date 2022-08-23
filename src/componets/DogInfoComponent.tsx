@@ -57,6 +57,8 @@ function DogInfoComponent({
     }
     const [imgData] = useSpecificImage(data.image_id);
 
+    console.log(imgData)
+
     return (
         <View
             borderWidth="thin"
@@ -93,8 +95,8 @@ function DogInfoComponent({
                                   onChange={(checked) => onCompareClicked(data.id, checked)}>Compare</Checkbox>
                     }
                     <Button variant="cta" onPress={() => {
-                        navigate(`/dogs/${([data.id]).toString()}/view`);
-                        setFavMode(false)
+                        navigate(`/dogs/${([favMode ? _.get(imgData, 'breeds[0].id') : data.id]).toString()}/view`);
+                        //setFavMode(false)
                     }}>View</Button>
                 </Flex>
             </View>

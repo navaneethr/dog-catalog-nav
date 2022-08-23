@@ -8,7 +8,7 @@ import {
     ProgressCircle,
     ActionButton,
     Heading,
-    Provider
+    Provider, View
 } from '@adobe/react-spectrum';
 import {useNavigate} from "react-router-dom";
 import {IDType} from "../utils/types";
@@ -106,17 +106,17 @@ function Catalog() {
             {compareDogsList.length > 0 && !favMode && (
                 <Provider colorScheme={"dark"}>
                     <div className={`compare-container ${minimize ? 'minimize' : ''}`}>
-                        <Provider colorScheme="dark">
+                        <View backgroundColor={"default"} height={'100%'} padding={0} margin={0}>
                             <Flex justifyContent={minimize ? "space-between" : "end"} alignItems={"center"}>
                                 {minimize && <span>Compare</span>}
-                                <ActionButton onPress={() => { setMinimize(!minimize)}}><Minimize  height={'16px'}/></ActionButton>
+                                <ActionButton margin={"size-100"} onPress={() => { setMinimize(!minimize)}}><Minimize  height={'16px'}/></ActionButton>
                             </Flex>
                             <Flex direction={"column"} alignItems={"center"}>
                                 {compareDogsList.length > 0 && <Heading>Selected {compareDogsList.length} of 4</Heading>}
                                 {compareDogsList.length > 1 &&
                                 <ActionButton onPress={() => navigate(`/dogs/${(compareDogsList).toString()}/compare`)}>Compare</ActionButton>}
                             </Flex>
-                        </Provider>
+                        </View>
                     </div>
                 </Provider>
 

@@ -48,7 +48,7 @@ function App() {
                         setSearchText={setSearchText}
                     />
                     <SideBar filters={filters} setFilters={setFilters}/>
-                    <View marginStart={'200px'}>
+                    <View marginStart={'200px'} overflow={'auto'} height={'100vh'}>
                         <Grid
                             areas={[
                                 '.  .',
@@ -58,7 +58,7 @@ function App() {
                             gap="0"
                         >
 
-                            <View gridArea="content" paddingTop={"static-size-300"}>
+                            <View gridArea="content" paddingTop={"static-size-400"}>
                                 <Routes>
                                     <Route path="/" element={<Catalog/>}/>
                                     <Route path="/about" element={<AboutMe/>}/>

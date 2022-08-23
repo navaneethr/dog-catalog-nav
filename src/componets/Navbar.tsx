@@ -45,7 +45,7 @@ export const NavBar = ({
 
     return (
         <View zIndex={1} backgroundColor={dark ? "static-black" : 'static-gray-300'} position={'fixed'} left={0}
-              right={0} flex="row">
+              right={0} flex="row" overflow={'auto'}>
             <Flex justifyContent={'space-between'} alignItems={"center"}>
                 <Flex alignItems={"center"}>
                     <SearchField
@@ -62,7 +62,7 @@ export const NavBar = ({
                         marginEnd={"static-size-115"}
                     />
                     {showErrorMessage && (
-                        <Flex alignItems={"start"}>
+                        <Flex alignItems={"start"} minWidth={'static-size-1000'}>
                             <ContextualHelp
                                 variant={"info"}
                             >
@@ -77,11 +77,11 @@ export const NavBar = ({
                         </Flex>
                     )}
                 </Flex>
-                <Flex justifyContent={"center"} alignItems={"center"} gap={"size-200"}>
+                <Flex justifyContent={"center"} alignItems={"center"} gap={"size-200"} minWidth={'static-size-1000'}>
                     <Code/>
                     <Heading>The Dog Project</Heading>
                 </Flex>
-                <Flex justifyContent={"end"}>
+                <Flex justifyContent={"end"} minWidth={'static-size-2000'}>
                     <Switch
                         margin={"static-size-100"}
                         isSelected={favMode}

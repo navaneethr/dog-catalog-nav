@@ -28,7 +28,7 @@ function DogDetailsComponent({dogId}: { dogId: IDType }) {
     ];
 
     return (
-        <Flex justifyContent={"center"} flex={1}>
+        <Flex justifyContent={"center"} flex={1} alignItems={"center"}>
             {
                 loading ? <ProgressCircle aria-label="Loading…" value={50} isIndeterminate/> :
                     <Flex justifyContent={"center"} margin={"static-size-100"}>

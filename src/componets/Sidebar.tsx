@@ -1,9 +1,20 @@
-import {View, CheckboxGroup, Checkbox, ContextualHelp, Heading, Content, Text, Flex} from "@adobe/react-spectrum";
+import {
+    View,
+    CheckboxGroup,
+    Checkbox,
+    ContextualHelp,
+    Heading,
+    Content,
+    Text,
+    Flex,
+    Button,
+    ActionButton
+} from "@adobe/react-spectrum";
 import React, {useContext, useEffect} from "react";
 import {DogsContext} from "../providers/DogsController";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {SideBarType} from "../utils/types";
-
+import Home from '@spectrum-icons/workflow/Home';
 
 
 /**
@@ -18,6 +29,7 @@ export const SideBar = ({filters, setFilters}: SideBarType) => {
         favMode
     } = useContext(DogsContext);
     const location = useLocation()
+    const navigate = useNavigate()
     useEffect(() => {
         applyFilters(filters)
     }, [filters])
@@ -25,7 +37,15 @@ export const SideBar = ({filters, setFilters}: SideBarType) => {
     const enableFiltersOnHomeOnly = location.pathname === '/'
 
     return (
-        <View position={"fixed"} top={'58px'} left={0} bottom={0} width={'200px'} borderEndWidth={"thin"} borderColor={"static-gray-600"}>
+        <View position={"fixed"} top={'58px'} left={0} bottom={0} width={'200px'} borderEndWidth={"thin"}
+              borderColor={"static-gray-600"}>
+            <View padding={"size-200"} paddingTop={"static-size-300"}>
+                <Flex direction={"column"} gap={"static-size-200"}>
+                    <Button onPress={() => navigate('/about')} variant={"cta"}>
+                        <Text>Readme</Text>
+                    </Button>
+                </Flex>
+            </View>
             <View padding={"size-100"} paddingBottom={0}>
                 <Flex alignItems={"start"}>
                     <ContextualHelp
@@ -67,7 +87,18 @@ export const SideBar = ({filters, setFilters}: SideBarType) => {
                     <Checkbox value="au">Australia</Checkbox>
                     <Checkbox value="us">United States</Checkbox>
                 </CheckboxGroup>
+
             </View>
+            <View padding={"size-200"}>
+                <Flex direction={"column"} gap={"static-size-200"}>
+                    <ActionButton onPress={() => navigate('/')}>
+                        <Home />
+                        <Text>Go Home</Text>
+                    </ActionButton>
+                </Flex>
+            </View>
+
+
         </View>
     )
 }
