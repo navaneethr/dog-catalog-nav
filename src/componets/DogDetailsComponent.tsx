@@ -15,7 +15,6 @@ function DogDetailsComponent({dogId}: {dogId: IDType}) {
             return {id: i, label: titleCase(key), name}
         }
     }).filter((elem) => elem);
-    console.log('listData', listData);
 
     let columns1 = [
         {name: '', uid: 'label'},
@@ -30,14 +29,13 @@ function DogDetailsComponent({dogId}: {dogId: IDType}) {
                     <Flex justifyContent={"center"} margin={"static-size-100"}>
                         <Image
                             src={imageData.url}
-                            alt="Eiffel Tower at sunset"
+                            alt="Dogs"
                             objectFit="cover"
                             width={"size-4600"}
                             height={"size-4600"}
                         />
                     </Flex>
             }
-            <Loading loading={loading}>
                 <TableView
                     aria-label="Example table with dynamic content"
                     margin={"static-size-200"}
@@ -60,7 +58,6 @@ function DogDetailsComponent({dogId}: {dogId: IDType}) {
                         )}
                     </TableBody>
                 </TableView>
-            </Loading>
 
         </Flex>
     );

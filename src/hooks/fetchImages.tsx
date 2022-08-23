@@ -7,7 +7,6 @@ function useDogImages(page: number = 1) {
     const fetchApi = () => {
         axios.get(`https://api.thedogapi.com/v1/images/?limit=10&page=0${page}&order=DESC`).then((res) => {
             setLoading(false);
-            console.log(res);
             setData([...data, ...res.data]);
         }).catch((err) => {
             setLoading(false);

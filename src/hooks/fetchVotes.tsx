@@ -15,7 +15,6 @@ function useVotes() {
     const fetchApi = () => {
         axios.get('https://api.thedogapi.com/v1/votes', httpHeaders).then((res) => {
             setLoading(false);
-            console.log(res);
             setData([...data, ...res.data]);
         }).catch((err) => {
             setLoading(false);

@@ -1,66 +1,73 @@
 import React, {useEffect, useState} from 'react';
-import {Routes, Route} from "react-router-dom";
+import {Routes, Route, useNavigate} from "react-router-dom";
 import Catalog from "./pages/Catalog";
 import AboutMe from "./pages/AboutMe";
-import {Switch, defaultTheme, Provider, Flex, Grid, View} from '@adobe/react-spectrum';
+import {Switch, defaultTheme, Provider, Flex, Grid, View, Checkbox, CheckboxGroup} from '@adobe/react-spectrum';
 import './App.css';
 import DogsController from "./providers/DogsController";
 import DogInfo from "./pages/DogInfo";
-
-const getLocation = function(href: string) {
-  let l = document.createElement("a");
-  l.href = href;
-  return l;
-};
+import {NavBar} from "./componets/Navbar";
+import {SideBar} from "./componets/Sidebar";
+import {FiltersType} from "./utils/types";
 
 function App() {
-  const mode = Boolean(localStorage.getItem('darkMode'));
-  const [dark, setDark] = useState<boolean>(mode);
-  const [favMode, setFavMode] = useState(false)
-  const route = getLocation(window.location.href).pathname;
-  useEffect(() => {
-    localStorage.setItem('darkMode', dark ? 'dark' : '');
-  }, [dark]);
-  return (
-      <Provider theme={defaultTheme} colorScheme={dark ? 'dark' : 'light'}>
-        <DogsController favMode={favMode}>
-          <>
-            <Grid
-                areas={[
-                  'header  header',
-                  'content content'
-                ]}
-                rows={['size-600']}
-                gap="0"
-            >
-              <View zIndex={1} backgroundColor={dark ? "static-black" : 'static-gray-300'} gridArea="header" position={'fixed'} left={0} right={0} flex="row" >
-                <Flex justifyContent={"space-between"}>
-                  <Switch
-                      margin={"static-size-100"}
-                      isSelected={favMode}
-                      onChange={setFavMode}>
-                    Show My Favorites
-                  </Switch>
-                  <Switch
-                      margin={"static-size-100"}
-                      isSelected={dark}
-                      onChange={setDark}>
-                    Dark Mode
-                  </Switch>
-                </Flex>
-              </View>
-              <View gridArea="content" padding={"static-size-200"}>
-                <Routes>
-                  <Route path="/" element={<Catalog/>}/>
-                  <Route path="/about" element={<AboutMe/>}/>
-                  <Route path="/dogs/:dogId" element={<DogInfo/>}/>
-                </Routes>
-              </View>
-            </Grid>
-          </>
-        </DogsController>
-      </Provider>
-  );
+    const [favMode, setFavMode] = useState(false)
+    const mode = Boolean(localStorage.getItem('darkMode'));
+    const [dark, setDark] = useState<boolean>(mode);
+    let [searchText, setSearchText] = useState('');
+    let [filters, setFilters] = useState<FiltersType>({
+        country: [],
+        bredFor: []
+    })
+    useEffect(() => {
+        localStorage.setItem('darkMode', dark ? 'dark' : '');
+    }, [dark]);
+
+    const navigate = useNavigate();
+
+    const setFavoriteMode = (bool: boolean) => {
+        if (bool) {
+            navigate('/')
+        }
+        setFavMode(bool);
+    }
+    return (
+        <Provider minHeight={'100vh'} theme={defaultTheme} colorScheme={dark ? 'dark' : 'light'}>
+            <DogsController filters={filters} setFilters={setFilters} favMode={favMode} setFavMode={(bool) => setFavMode(bool)} clearSearchText={() => setSearchText('')}>
+                <>
+                    <NavBar
+                        favMode={favMode}
+                        dark={dark}
+                        setDark={setDark}
+                        setFavoriteMode={setFavoriteMode}
+                        searchText={searchText}
+                        setSearchText={setSearchText}
+                    />
+                    <SideBar filters={filters} setFilters={setFilters}/>
+                    <View marginStart={'200px'}>
+                        <Grid
+                            areas={[
+                                '.  .',
+                                'content content'
+                            ]}
+                            rows={['size-600']}
+                            gap="0"
+                        >
+
+                            <View gridArea="content" padding={"static-size-200"}>
+                                <Routes>
+                                    <Route path="/" element={<Catalog/>}/>
+                                    <Route path="/about" element={<AboutMe/>}/>
+                                    <Route path="/dogs/:dogId/:type" element={<DogInfo/>}/>
+                                </Routes>
+                            </View>
+                        </Grid>
+                    </View>
+                </>
+            </DogsController>
+        </Provider>
+    );
 }
+
 
 export default App;

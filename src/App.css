@@ -53,7 +53,7 @@
 }
 
 .active svg {
-  fill: darkred;
+  fill: red;
 }
 
 .heart-button:hover svg {
@@ -69,7 +69,8 @@
   left: 35vw;
   right: 35vw;
   z-index: 2;
-  background: #393939;
+  border: 1px solid gray;
+  border-bottom: none;
   border-radius: 8px 8px 0 0;
   padding: 12px;
 }

@@ -8,7 +8,6 @@ function useSpecificImage(id: IDType) {
     const fetchApi = () => {
         axios.get(`https://api.thedogapi.com/v1/images/${id}`).then((res) => {
             setLoading(false);
-            console.log(res);
             setData(res.data);
         }).catch((err) => {
             setLoading(false);

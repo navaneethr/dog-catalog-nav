@@ -15,7 +15,6 @@ function useFetch({url}: {url: string}) {
     const fetchApi = () => {
         axios.get(url, httpHeaders).then((res) => {
             setLoading(false);
-            console.log(res);
             setData([...data, ...res.data]);
         }).catch((err) => {
             setLoading(false);

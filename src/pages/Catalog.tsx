@@ -14,7 +14,6 @@ import {useNavigate} from "react-router-dom";
 import {IDType} from "../utils/types";
 import {postFavorite, removeFavorite} from "../apis";
 import DogInfoComponent from "../componets/DogInfoComponent";
-import DogFavInfoComponent from "../componets/DogFavInfoComponent";
 import Minimize from '@spectrum-icons/workflow/Minimize';
 
 function Catalog() {
@@ -25,7 +24,9 @@ function Catalog() {
         loading,
         favorites,
         refetchFavorites,
-        favMode
+        favMode,
+        applyFilters,
+        setFilters
     } = useContext(DogsContext);
     const navigate = useNavigate();
     const [compareDogsList, setCompareDogsList] = useState<Array<IDType>>([])
@@ -59,59 +60,64 @@ function Catalog() {
         setLoadingState(false)
     }
 
-    const dogData = favMode ? favorites : data
+    const dogData = favMode ? favorites : data;
+
+    console.log('----->', dogData)
 
 
     return (
         <div>
-            <Grid columns={repeat('auto-fit', 'size-3600')}
+            <Grid columns={repeat('auto-fit', 'static-size-3400')}
                   autoRows="size-3600"
                   justifyContent="center"
-                  gap="size-200">
+                  gap="size-150">
                 {
                     dogData.map((info, key) => {
-                        return !favMode ? (
-                                <DogInfoComponent
-                                    key={key}
-                                    data={info}
-                                    favoriteImages={favorites}
-                                    compareDogsList={compareDogsList}
-                                    onCompareClicked={onCompareClicked}
-                                    favoriteImage={favoriteImage}
-                                    removeFavoriteImage={removeFavoriteImage}
-                                    loading={loadingState}
-                                />
-                            ) :
-                            <DogFavInfoComponent
+                        return (
+                            <DogInfoComponent
                                 key={key}
-                                dogData={info}
+                                data={info}
                                 favoriteImages={favorites}
+                                compareDogsList={compareDogsList}
+                                onCompareClicked={onCompareClicked}
+                                favoriteImage={favoriteImage}
+                                removeFavoriteImage={removeFavoriteImage}
+                                loading={loadingState}
+                                favMode={favMode}
                             />
+                        )
                     })
                 }
             </Grid>
             <Flex justifyContent={"center"} margin={"static-size-200"}>
                 {
                     (loading) ? <ProgressCircle aria-label="Loading…" value={50} isIndeterminate/> : (!favMode &&
-                        <Button margin={"size-200"} variant="primary" onPress={() => triggerPageData(currentPage + 1)}>
+                        <Button margin={"size-200"} variant="primary" onPress={() => {
+                            applyFilters({bredFor: [], country: []})
+                            setFilters({bredFor: [], country: []})
+                            triggerPageData(currentPage + 1);
+                        }}>
                             Load More
                         </Button>)
                 }
             </Flex>
             {compareDogsList.length > 0 && !favMode && (
-                <div className={`compare-container ${minimize ? 'minimize' : ''}`}>
-                    <Provider colorScheme="dark">
-                        <Flex justifyContent={minimize ? "space-between" : "end"} alignItems={"center"}>
-                            {minimize && <span>Expand to Compare</span>}
-                            <ActionButton onPress={() => { setMinimize(!minimize)}}><Minimize  height={'16px'}/></ActionButton>
-                        </Flex>
-                        <View padding={"static-size-200"}>
-                            {compareDogsList.length > 0 && <Heading>Selected {compareDogsList.length} of 4</Heading>}
-                            {compareDogsList.length > 1 &&
-                            <ActionButton onPress={() => navigate(`/dogs/${(compareDogsList).toString()}`)}>Compare</ActionButton>}
-                        </View>
-                    </Provider>
-                </div>
+                <Provider colorScheme={"dark"}>
+                    <div className={`compare-container ${minimize ? 'minimize' : ''}`}>
+                        <Provider colorScheme="dark">
+                            <Flex justifyContent={minimize ? "space-between" : "end"} alignItems={"center"}>
+                                {minimize && <span>Compare</span>}
+                                <ActionButton onPress={() => { setMinimize(!minimize)}}><Minimize  height={'16px'}/></ActionButton>
+                            </Flex>
+                            <Flex direction={"column"} alignItems={"center"}>
+                                {compareDogsList.length > 0 && <Heading>Selected {compareDogsList.length} of 4</Heading>}
+                                {compareDogsList.length > 1 &&
+                                <ActionButton onPress={() => navigate(`/dogs/${(compareDogsList).toString()}/compare`)}>Compare</ActionButton>}
+                            </Flex>
+                        </Provider>
+                    </div>
+                </Provider>
+
             )}
 
         </div>

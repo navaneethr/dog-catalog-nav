@@ -21,8 +21,10 @@ import {IDType} from "../utils/types";
 import {postFavorite, removeFavorite} from "../apis";
 import {useSpecificImage} from "../hooks";
 import {countries} from "../utils/constants";
+const _ = require('lodash');
 
-interface DogInfoData {
+interface DogDataInterface {
+    image_id: IDType;
     image: {
         url: string;
         id: IDType;
@@ -33,18 +35,20 @@ interface DogInfoData {
 }
 
 interface DogsInfoInterface {
-    data: DogInfoData;
+    data: DogDataInterface;
     favoriteImages: Array<{ id: IDType; image_id: IDType }>;
-    compareDogsList: Array<IDType>;
-    onCompareClicked: (id: IDType, checked: boolean) => void;
+    compareDogsList?: Array<IDType>;
+    onCompareClicked?: (id: IDType, checked: boolean) => void;
+    favMode: boolean;
     favoriteImage: (id: IDType) => void;
     removeFavoriteImage: (id: IDType) => void;
     loading: boolean;
 }
 
-function DogInfoComponent({data, compareDogsList, onCompareClicked, favoriteImages}: DogsInfoInterface) {
+function DogInfoComponent({data, compareDogsList = [], onCompareClicked = () => null, favoriteImages, favMode = false}: DogsInfoInterface) {
     const {
         refetchFavorites,
+        setFavMode
     } = useContext(DogsContext);
     const navigate = useNavigate();
     const favImg = favoriteImages.find(({image_id}) => image_id === data.image.id)
@@ -61,40 +65,43 @@ function DogInfoComponent({data, compareDogsList, onCompareClicked, favoriteImag
         setLoadingState(false)
 
     }
+    const [imgData, imgLoading] = useSpecificImage(data.image_id);
 
     return (
         <View
             borderWidth="thin"
             borderColor="dark"
             borderRadius="medium"
-            padding="size-250"
             position={"relative"}
-            height={'280px'}
         >
             <div className="dog-images-container">
-                <Flex width="100%" height="100px" justifyContent={"center"} margin={"static-size-100"}>
+                <Flex width="100%" height="150px" justifyContent={"center"} margin={"static-size-100"}>
                     <Image
                         src={data.image.url}
                         alt="Eiffel Tower at sunset"
                         objectFit="cover"
+                        width={'100%'}
+                        height={'150px'}
                     />
                 </Flex>
             </div>
             <View padding={"static-size-200"}>
                 <Flex direction={'column'} alignItems={"center"}>
-                    <Text>{data.name}</Text>
+                    <Text>{favMode ? _.get(imgData, 'breeds[0].name') : data.name}</Text>
                     <Flex alignItems={"self-start"}>
                         <Location height={'16px'}/>
-                        {countries[data.country_code] || 'Unknown'}
+                        {countries[data.country_code] || countries[_.get(imgData, 'breeds[0].country_code')] || 'Unknown'}
                     </Flex>
                 </Flex>
             </View>
             <View position={"absolute"} bottom={0} left={0} right={0} padding={"static-size-200"}>
-                <Flex justifyContent={'space-between'}>
-                    <Checkbox isDisabled={compareDogsList.length > 3 && !compareDogsList.includes(data.id)}
-                              isSelected={compareDogsList.includes(data.id)}
-                              onChange={(checked) => onCompareClicked(data.id, checked)}>Compare</Checkbox>
-                    <Button variant="cta" onPress={() => navigate(`/dogs/${([data.id]).toString()}`)}>View</Button>
+                <Flex justifyContent={favMode ? 'end' : 'space-between'}>
+                    {
+                        !favMode && <Checkbox isDisabled={compareDogsList.length > 3 && !compareDogsList.includes(data.id)}
+                                                 isSelected={compareDogsList.includes(data.id)}
+                                                 onChange={(checked) => onCompareClicked(data.id, checked)}>Compare</Checkbox>
+                    }
+                    <Button variant="cta" onPress={() => { navigate(`/dogs/${([data.id]).toString()}/view`); setFavMode(false) }}>View</Button>
                 </Flex>
             </View>
             <View position={"absolute"} top={0} right={0} padding={"static-size-200"}>
@@ -102,7 +109,7 @@ function DogInfoComponent({data, compareDogsList, onCompareClicked, favoriteImag
                     loadingState ? <ProgressCircle size={"S"} aria-label="Loading…" value={50} isIndeterminate/> :
                         <div role={'button'} onClick={toggleHeartState}
                              className={`heart-button ${(favImg) ? 'active' : ''}`}>
-                            <Heart/>
+                            <Heart size={'M'}/>
                         </div>
                 }
             </View>
