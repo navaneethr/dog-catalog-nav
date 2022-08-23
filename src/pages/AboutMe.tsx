@@ -20,7 +20,7 @@ function AboutMe() {
             <h1>About Me</h1>
             <Text>Hi, I'm Navaneeth, extremely passionate about UI/UX, I care about aesthetics but at the same time I
                 deliver clean code with great design patterns which help me reuse most of the code I write.</Text>
-            <Heading>Please use Web Browser for the best user Experience</Heading>
+            <Heading>Please use Web Browser for the best user experience</Heading>
             <ListBox aria-label="Options" selectionMode="single">
                 <Section title="Here are the list of requirements that I accomplished in this task">
                     <Item>
