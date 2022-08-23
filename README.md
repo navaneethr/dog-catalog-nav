@@ -1,46 +1,21 @@
-# Getting Started with Create React App
+# Dog Catalog
+_A catalog for reviewing dog breeds_
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+As part of the candidate review process, we would like to see your coding skills. This task should highlight what you do well and inform us of your preparation to work on our team. There are specific items you need to complete as outlined below but you are welcome to be creative and add your personal touch to the final output.
 
-## Available Scripts
+You will be creating an application as outlined in the requirements and capabilities below. The application you create should use React Spectrum components which you can find here: https://react-spectrum.adobe.com. Use the React Spectrum components you feel best match your intended design.
 
-In the project directory, you can run:
+## Requirements
+- Develop an application that catalogs the different breeds of dogs
+- Use TypeScript as your coding language
+- For obtaining information and images about dogs, use the following API: https://documenter.getpostman.com/view/4016432/the-dog-api/RW81vZ4Z
 
-### `npm start`
+## Capabilities to Include
+- A catalog page listing the different breeds of dogs
+- The ability to select a specific dog breed to obtain more information (e.g., dog profile and image)
+- Allow a user to compare different dog breeds to help identify a dog they like
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Final Output
+- Use a GitHub repository to write your code
+- Deploy your code to a service like Netlify or other service of your choice
+- Share the link for the repository and the deployed application witih the interview team
