@@ -1,7 +1,13 @@
 import axios from 'axios';
 import {API_KEY, SUB_ID} from "../utils/constants";
+import {IDType} from "../utils/types";
 
-const genericPost = (url: string, imageId: any,) => {
+/**
+ * Generic Post Request
+ * @param url
+ * @param imageId
+ */
+const genericPost = (url: string, imageId: IDType): Promise<any> => {
     const httpHeaders = {
         headers: {
             'Content-Type': 'application/json',

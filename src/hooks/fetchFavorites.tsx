@@ -9,6 +9,9 @@ const httpHeaders = {
     }
 }
 
+/**
+ * Fetches Favorites
+ */
 function useFavorites() {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState<any>([])

@@ -1,17 +1,23 @@
-import {Flex, Switch, View, SearchField, CheckboxGroup, Checkbox, ActionButton} from "@adobe/react-spectrum";
-import React, {useContext, useEffect, useState} from "react";
+import {View, CheckboxGroup, Checkbox, ContextualHelp, Heading, Content, Text, Flex} from "@adobe/react-spectrum";
+import React, {useContext, useEffect} from "react";
 import {DogsContext} from "../providers/DogsController";
 import {useLocation} from "react-router-dom";
-import {FiltersType} from "../utils/types";
+import {SideBarType} from "../utils/types";
 
-const _ = require('lodash');
-export const SideBar = ({filters, setFilters}: {filters: FiltersType, setFilters: (values: any) => void}) => {
+
+
+/**
+ * Sidebar Component
+ * @param filters
+ * @param setFilters
+ * @constructor
+ */
+export const SideBar = ({filters, setFilters}: SideBarType) => {
     const {
         applyFilters,
         favMode
     } = useContext(DogsContext);
     const location = useLocation()
-    console.log('---> LOC', location)
     useEffect(() => {
         applyFilters(filters)
     }, [filters])
@@ -19,8 +25,25 @@ export const SideBar = ({filters, setFilters}: {filters: FiltersType, setFilters
     const enableFiltersOnHomeOnly = location.pathname === '/'
 
     return (
-        <View position={"fixed"} top={'48px'} left={0} bottom={0} width={'200px'} borderEndWidth={"thin"} borderColor={"static-gray-600"}>
+        <View position={"fixed"} top={'58px'} left={0} bottom={0} width={'200px'} borderEndWidth={"thin"} borderColor={"static-gray-600"}>
+            <View padding={"size-100"} paddingBottom={0}>
+                <Flex alignItems={"start"}>
+                    <ContextualHelp
+                        variant="info"
+                    >
+                        <Heading>Filters</Heading>
+                        <Content>
+                            <Text>
+                                Filters are only available on the Home Screen and when Favorite Mode is turned off
+                            </Text>
+                        </Content>
+                    </ContextualHelp>
+                    <Text>Help ?</Text>
+                </Flex>
+            </View>
+
             <View padding={"static-size-200"}>
+
                 <CheckboxGroup
                     label="Bred For"
                     value={filters.bredFor}

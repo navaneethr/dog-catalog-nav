@@ -2,6 +2,10 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {IDType} from "../utils/types";
 
+/**
+ * Gets a specific breed's info
+ * @param id
+ */
 function useDogInfo(id: IDType) {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState<any>([])

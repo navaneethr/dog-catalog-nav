@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Routes, Route, useNavigate} from "react-router-dom";
 import Catalog from "./pages/Catalog";
 import AboutMe from "./pages/AboutMe";
-import {Switch, defaultTheme, Provider, Flex, Grid, View, Checkbox, CheckboxGroup} from '@adobe/react-spectrum';
+import {defaultTheme, Provider, Grid, View} from '@adobe/react-spectrum';
 import './App.css';
 import DogsController from "./providers/DogsController";
 import DogInfo from "./pages/DogInfo";
@@ -10,6 +10,10 @@ import {NavBar} from "./componets/Navbar";
 import {SideBar} from "./componets/Sidebar";
 import {FiltersType} from "./utils/types";
 
+/**
+ * App is the Root Component where all the Main Components lie, Navbar, Sidebar and the Router
+ * @constructor
+ */
 function App() {
     const [favMode, setFavMode] = useState(false)
     const mode = Boolean(localStorage.getItem('darkMode'));
@@ -54,7 +58,7 @@ function App() {
                             gap="0"
                         >
 
-                            <View gridArea="content" padding={"static-size-200"}>
+                            <View gridArea="content" paddingTop={"static-size-300"}>
                                 <Routes>
                                     <Route path="/" element={<Catalog/>}/>
                                     <Route path="/about" element={<AboutMe/>}/>

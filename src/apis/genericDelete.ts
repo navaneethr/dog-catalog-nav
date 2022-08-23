@@ -1,9 +1,11 @@
-
-
 import axios from 'axios';
-import {API_KEY, SUB_ID} from "../utils/constants";
+import {API_KEY} from "../utils/constants";
 
-const genericDelete = (url: string) => {
+/**
+ * Generic Delete
+ * @param url
+ */
+const genericDelete = (url: string): Promise<any> => {
     const httpHeaders = {
         headers: {
             'Content-Type': 'application/json',

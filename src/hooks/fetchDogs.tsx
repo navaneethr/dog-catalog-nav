@@ -4,7 +4,10 @@ import {FiltersType} from "../utils/types";
 import {clean} from "../utils/functions";
 const _ = require('lodash');
 
-
+/**
+ * Gets a list of Dog Data based on the page
+ * @param page
+ */
 function useDogsList(page: number = 1) {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState<any>([]);
@@ -27,7 +30,6 @@ function useDogsList(page: number = 1) {
             bred_for: filters.bredFor
         }
         const cleanFilters = clean(newFilters);
-        console.log(cleanFilters);
             if(_.isEmpty(cleanFilters)) {
                 setFiltersApplied(false)
             } else {
@@ -37,7 +39,6 @@ function useDogsList(page: number = 1) {
             const filteredData = data.filter((d: any) => {
             for (var key in cleanFilters) {
                 return cleanFilters[key].some((val: string) => {
-                    console.log(String(d[key]), val, (String(d[key]).toLowerCase()).indexOf(val))
                     return ((String(d[key]).toLowerCase()).indexOf(val) > -1)
                 })
             }

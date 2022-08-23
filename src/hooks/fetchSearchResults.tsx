@@ -2,13 +2,17 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 const _ = require('lodash');
 
+/**
+ * Fetches Search Results when you enter text in the search area and click enter
+ * @param searchTerm
+ */
 function useSearchResults(searchTerm: string = '') {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState<any>([])
     const fetchApi = () => {
         axios.get(`https://api.thedogapi.com/v1/breeds/search?q=${searchTerm}`).then((res) => {
             setLoading(false);
-            setData(_.isEmpty(res.data) ? 'Search results empty, please search again' : res.data);
+            setData(_.isEmpty(res.data) ? 'Results not found, retry.' : res.data);
         }).catch((err) => {
             setLoading(false);
             setData(err.message);
@@ -24,7 +28,6 @@ function useSearchResults(searchTerm: string = '') {
             setData([])
         }
     }, [searchTerm]);
-    console.log(data);
     return [ loading, data, clearSearchData ]
 }
 

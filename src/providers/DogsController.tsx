@@ -1,27 +1,7 @@
 import React, {createContext, ReactElement, useState} from 'react';
 import {useDogsList, useFavorites} from "../hooks";
 import useSearchResults from "../hooks/fetchSearchResults";
-import {FiltersType} from "../utils/types";
-
-interface DogsContextInterface {
-    loading: boolean;
-    favoritesLoading: boolean;
-    favMode: boolean;
-    searchResultsLoading: boolean;
-    setFavMode: (bool: boolean) => void;
-    data: Array<any>;
-    searchData: Array<any>;
-    favorites: Array<any>;
-    triggerPageData: (page: number) => void;
-    currentPage: number;
-    refetchFavorites: () => void;
-    filterResults: (searchTerm: string) => void;
-    clearSearchData: () => void;
-    clearSearchText: () => void;
-    filters: FiltersType;
-    applyFilters: (values: FiltersType) => void;
-    setFilters: (values: FiltersType) => void;
-}
+import {DefaultDogControllerPropsType, DogsContextType, FiltersType} from "../utils/types";
 
 const defaultValues = {
     loading: false,
@@ -46,13 +26,21 @@ const defaultValues = {
     setFilters: () => null
 }
 
-export const DogsContext = createContext<DogsContextInterface>(defaultValues);
+export const DogsContext = createContext<DogsContextType>(defaultValues);
 
-function DogsController(props: { children: ReactElement, favMode: boolean, setFavMode: (bool: boolean) => void, clearSearchText: () => void, filters: FiltersType, setFilters: (filters: FiltersType) => void }) {
+/**
+ * Dogs Controller is where most of my application critical state resides
+ * @param props
+ * @constructor
+ */
+function DogsController(props: DefaultDogControllerPropsType) {
     const [page, setPage] = useState<number>(1);
     const [searchQuery, setSearchQuery] = useState<string>('');
+    // useFavorites Hook executes a promise and returns favorites for the user
     const [favorites, favoritesLoading, refetchFavorites] = useFavorites();
+    // useDogsList Hook executes a promise and returns list of dog breed information when provided with a page number
     const [loading, data, applyFilters] = useDogsList(page);
+    // useSearchResults takes a searchQuery for a param and returns relevant data
     const [searchResultsLoading, searchData, clearSearchData] = useSearchResults(searchQuery);
 
     return (

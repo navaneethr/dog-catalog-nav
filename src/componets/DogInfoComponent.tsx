@@ -4,48 +4,38 @@ import {
     Button,
     View,
     Flex,
-    Grid,
-    repeat,
     ProgressCircle,
     Image,
     Checkbox,
-    ActionButton,
-    Heading,
-    Switch,
     Text
 } from '@adobe/react-spectrum';
 import Heart from '@spectrum-icons/workflow/Heart';
 import Location from '@spectrum-icons/workflow/Location';
 import {useNavigate} from "react-router-dom";
-import {IDType} from "../utils/types";
+import {DogsInfoInterface, IDType} from "../utils/types";
 import {postFavorite, removeFavorite} from "../apis";
 import {useSpecificImage} from "../hooks";
 import {countries} from "../utils/constants";
+
 const _ = require('lodash');
 
-interface DogDataInterface {
-    image_id: IDType;
-    image: {
-        url: string;
-        id: IDType;
-    };
-    name: string;
-    country_code: string;
-    id: IDType;
-}
 
-interface DogsInfoInterface {
-    data: DogDataInterface;
-    favoriteImages: Array<{ id: IDType; image_id: IDType }>;
-    compareDogsList?: Array<IDType>;
-    onCompareClicked?: (id: IDType, checked: boolean) => void;
-    favMode: boolean;
-    favoriteImage: (id: IDType) => void;
-    removeFavoriteImage: (id: IDType) => void;
-    loading: boolean;
-}
-
-function DogInfoComponent({data, compareDogsList = [], onCompareClicked = () => null, favoriteImages, favMode = false}: DogsInfoInterface) {
+/**
+ * DogInfoComponent is the Card Component with features like View, Favorite, Compare
+ * @param data
+ * @param compareDogsList
+ * @param onCompareClicked
+ * @param favoriteImages
+ * @param favMode
+ * @constructor
+ */
+function DogInfoComponent({
+                              data,
+                              compareDogsList = [],
+                              onCompareClicked = () => null,
+                              favoriteImages,
+                              favMode = false
+                          }: DogsInfoInterface) {
     const {
         refetchFavorites,
         setFavMode
@@ -65,7 +55,7 @@ function DogInfoComponent({data, compareDogsList = [], onCompareClicked = () => 
         setLoadingState(false)
 
     }
-    const [imgData, imgLoading] = useSpecificImage(data.image_id);
+    const [imgData] = useSpecificImage(data.image_id);
 
     return (
         <View
@@ -97,11 +87,15 @@ function DogInfoComponent({data, compareDogsList = [], onCompareClicked = () => 
             <View position={"absolute"} bottom={0} left={0} right={0} padding={"static-size-200"}>
                 <Flex justifyContent={favMode ? 'end' : 'space-between'}>
                     {
-                        !favMode && <Checkbox isDisabled={compareDogsList.length > 3 && !compareDogsList.includes(data.id)}
-                                                 isSelected={compareDogsList.includes(data.id)}
-                                                 onChange={(checked) => onCompareClicked(data.id, checked)}>Compare</Checkbox>
+                        !favMode &&
+                        <Checkbox isDisabled={compareDogsList.length > 3 && !compareDogsList.includes(data.id)}
+                                  isSelected={compareDogsList.includes(data.id)}
+                                  onChange={(checked) => onCompareClicked(data.id, checked)}>Compare</Checkbox>
                     }
-                    <Button variant="cta" onPress={() => { navigate(`/dogs/${([data.id]).toString()}/view`); setFavMode(false) }}>View</Button>
+                    <Button variant="cta" onPress={() => {
+                        navigate(`/dogs/${([data.id]).toString()}/view`);
+                        setFavMode(false)
+                    }}>View</Button>
                 </Flex>
             </View>
             <View position={"absolute"} top={0} right={0} padding={"static-size-200"}>

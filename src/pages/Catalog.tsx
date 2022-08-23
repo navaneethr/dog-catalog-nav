@@ -8,7 +8,7 @@ import {
     ProgressCircle,
     ActionButton,
     Heading,
-    Provider, View
+    Provider
 } from '@adobe/react-spectrum';
 import {useNavigate} from "react-router-dom";
 import {IDType} from "../utils/types";
@@ -16,6 +16,11 @@ import {postFavorite, removeFavorite} from "../apis";
 import DogInfoComponent from "../componets/DogInfoComponent";
 import Minimize from '@spectrum-icons/workflow/Minimize';
 
+
+/**
+ * This is the Catalog page where all the dogs are displayed
+ * @constructor
+ */
 function Catalog() {
     const {
         data,
@@ -61,9 +66,6 @@ function Catalog() {
     }
 
     const dogData = favMode ? favorites : data;
-
-    console.log('----->', dogData)
-
 
     return (
         <div>
