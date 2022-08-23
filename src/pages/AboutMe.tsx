@@ -1,11 +1,6 @@
 import React from 'react';
 import {
-    Button,
     View,
-    Flex,
-    ProgressCircle,
-    Image,
-    Checkbox,
     Text,
     Heading,
     ListBox,
@@ -49,11 +44,7 @@ function AboutMe() {
                     </Item>
                     <Item>
                         <Bullet size="S"/>
-                        <Text>Click on "Show Favorites" toggle to toggle between your favorite dogs and everything else.</Text>
-                    </Item>
-                    <Item>
-                        <Bullet size="S"/>
-                        <Text>Search for the breeds you want to using the Searchbar</Text>
+                        <Text>Search for the breeds you want to use the Searchbar</Text>
                     </Item>
                     <Item>
                         <Bullet size="S"/>
