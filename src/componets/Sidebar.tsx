@@ -37,8 +37,7 @@ export const SideBar = ({filters, setFilters}: SideBarType) => {
     const enableFiltersOnHomeOnly = location.pathname === '/'
 
     return (
-        <View position={"fixed"} top={'58px'} left={0} bottom={0} width={'200px'} borderEndWidth={"thin"}
-              borderColor={"static-gray-600"}>
+        <View position={"fixed"} top={'58px'} left={0} bottom={0} width={'200px'}>
             <View padding={"size-200"} paddingTop={"static-size-300"}>
                 <Flex direction={"column"} gap={"static-size-200"}>
                     <Button onPress={() => navigate('/about')} variant={"cta"}>
