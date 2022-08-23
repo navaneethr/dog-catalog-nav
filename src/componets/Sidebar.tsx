@@ -57,7 +57,7 @@ export const SideBar = ({filters, setFilters}: SideBarType) => {
                             </Text>
                         </Content>
                     </ContextualHelp>
-                    <Text>Help ?</Text>
+                    <Text>Help with filters</Text>
                 </Flex>
             </View>
 
