@@ -1,10 +1,9 @@
-const _ = require('lodash');
 import {Flex, Switch, View, SearchField, Heading} from "@adobe/react-spectrum";
 import React, {useContext, useEffect, useState} from "react";
 import {DogsContext} from "../providers/DogsController";
 import {useNavigate} from "react-router-dom";
 import Code from '@spectrum-icons/workflow/Code';
-
+const _ = require('lodash');
 export const NavBar = ({
                            favMode,
                            setFavoriteMode,
