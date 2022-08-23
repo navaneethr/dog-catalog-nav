@@ -103,7 +103,7 @@ function DogInfoComponent({
                     loadingState ? <ProgressCircle size={"S"} aria-label="Loading…" value={50} isIndeterminate/> :
                         <div role={'button'} onClick={toggleHeartState}
                              className={`heart-button ${(favImg) ? 'active' : ''}`}>
-                            <Heart size={'M'}/>
+                            <Heart size={'L'}/>
                         </div>
                 }
             </View>
