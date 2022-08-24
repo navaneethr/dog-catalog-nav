@@ -54,6 +54,10 @@ function AboutMe() {
                         <Bullet size="S"/>
                         <Text>Toggle between Dark and Light Mode</Text>
                     </Item>
+                    <Item>
+                        <Bullet size="S"/>
+                        <Text>Toggle between two views in comparison mode</Text>
+                    </Item>
                 </Section>
             </ListBox>
         </View>

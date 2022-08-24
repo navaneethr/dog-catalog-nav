@@ -10,9 +10,11 @@ import {titleCase} from "../utils/functions";
  * @constructor
  */
 function DogDetailsComponent({dogId}: { dogId: IDType }) {
-    const [data] = useDogInfo(dogId as IDType)
-    const [imageData, loading] = useSpecificImage(data.reference_image_id);
-    const dataKeys = Object.keys(data);
+    const [d] = useDogInfo([dogId] as Array<IDType>)
+    const data = d[0];
+    console.log(d)
+    const [imageData, loading] = useSpecificImage(data?.reference_image_id);
+    const dataKeys = Object.keys(data || {});
 
     // Generating List Data
     const listData = dataKeys.map((key, i) => {
@@ -21,11 +23,11 @@ function DogDetailsComponent({dogId}: { dogId: IDType }) {
             return {id: i, label: titleCase(key), name}
         }
     }).filter((elem) => elem);
-
     let columns = [
         {name: '', uid: 'label'},
         {name: '', uid: 'name'},
     ];
+    console.log(listData, columns)
 
     return (
         <Flex justifyContent={"center"} flex={1} alignItems={"center"}>
