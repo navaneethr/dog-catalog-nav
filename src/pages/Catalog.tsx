@@ -107,7 +107,7 @@ function Catalog() {
                     <div className={`compare-container ${minimize ? 'minimize' : ''}`}>
                         <View backgroundColor={"default"} height={'100%'} padding={0} margin={0}>
                             <Flex justifyContent={minimize ? "space-between" : "end"} alignItems={"center"}>
-                                {minimize && <span>Compare</span>}
+                                {minimize && <View marginStart={"static-size-100"} ><span>Compare</span></View>}
                                 <ActionButton margin={"size-100"} onPress={() => { setMinimize(!minimize)}}><Minimize  height={'16px'}/></ActionButton>
                             </Flex>
                             <Flex direction={"column"} alignItems={"center"}>
