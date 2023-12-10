@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react';
-import {DogsContext} from "../providers/DogsController";
+import React, { useContext, useState } from 'react';
+import { DogsContext } from "../providers/DogsController";
 import {
     Button,
     View,
@@ -11,11 +11,11 @@ import {
 } from '@adobe/react-spectrum';
 import Heart from '@spectrum-icons/workflow/Heart';
 import Location from '@spectrum-icons/workflow/Location';
-import {useNavigate} from "react-router-dom";
-import {DogsInfoInterface, IDType} from "../utils/types";
-import {postFavorite, removeFavorite} from "../apis";
-import {useSpecificImage} from "../hooks";
-import {countries} from "../utils/constants";
+import { useNavigate } from "react-router-dom";
+import { DogsInfoInterface, IDType } from "../utils/types";
+import { postFavorite, removeFavorite } from "../apis";
+import { useSpecificImage } from "../hooks";
+import { countries } from "../utils/constants";
 
 const _ = require('lodash');
 
@@ -30,18 +30,18 @@ const _ = require('lodash');
  * @constructor
  */
 function DogInfoComponent({
-                              data,
-                              compareDogsList = [],
-                              onCompareClicked = () => null,
-                              favoriteImages,
-                              favMode = false
-                          }: DogsInfoInterface) {
+    data,
+    compareDogsList = [],
+    onCompareClicked = () => null,
+    favoriteImages,
+    favMode = false
+}: DogsInfoInterface) {
     const {
         refetchFavorites,
         setFavMode
     } = useContext(DogsContext);
     const navigate = useNavigate();
-    const favImg = favoriteImages.find(({image_id}) => image_id === data.image.id)
+    const favImg = favoriteImages?.find(({ image_id }) => image_id === data?.id)
     const [loadingState, setLoadingState] = useState(false);
 
     const toggleHeartState = async () => {
@@ -49,7 +49,7 @@ function DogInfoComponent({
         if (favImg) {
             await removeFavorite(favImg.id)
         } else {
-            await postFavorite(data.image.id)
+            await postFavorite(data?.id)
         }
         refetchFavorites();
         setLoadingState(false)
@@ -67,20 +67,29 @@ function DogInfoComponent({
         >
             <div className="dog-images-container">
                 <Flex width="100%" height="150px" justifyContent={"center"} margin={"static-size-100"}>
-                    <Image
-                        src={data.image.url}
-                        alt="Eiffel Tower at sunset"
-                        objectFit="cover"
-                        width={'100%'}
-                        height={'150px'}
-                    />
+                    {
+                        !_.isEmpty(data?.image?.url) ?
+                            <Image
+                                src={data?.image?.url}
+                                alt={data?.name}
+                                objectFit="cover"
+                                width={'100%'}
+                                height={'150px'}
+                            /> :
+                            <View
+                                width={'100%'}
+                                height={'150px'}
+                                backgroundColor={'green-400'}
+                                borderRadius={'medium'}
+                            />
+                    }
                 </Flex>
             </div>
             <View padding={"static-size-200"}>
                 <Flex direction={'column'} alignItems={"center"}>
-                    <Text>{favMode ? _.get(imgData, 'breeds[0].name') : data.name}</Text>
+                    <Text>{favMode ? _.get(imgData, 'breeds[0].name') : data?.name}</Text>
                     <Flex alignItems={"self-start"}>
-                        <Location height={'16px'}/>
+                        <Location height={'16px'} />
                         {countries[data.country_code] || countries[_.get(imgData, 'breeds[0].country_code')] || 'Unknown'}
                     </Flex>
                 </Flex>
@@ -90,8 +99,8 @@ function DogInfoComponent({
                     {
                         !favMode &&
                         <Checkbox isDisabled={compareDogsList.length > 3 && !compareDogsList.includes(data.id)}
-                                  isSelected={compareDogsList.includes(data.id)}
-                                  onChange={(checked) => onCompareClicked(data.id, checked)}>Compare</Checkbox>
+                            isSelected={compareDogsList.includes(data.id)}
+                            onChange={(checked) => onCompareClicked(data.id, checked)}>Compare</Checkbox>
                     }
                     <Button variant="cta" onPress={() => {
                         navigate(`/dogs/${([favMode ? _.get(imgData, 'breeds[0].id') : data.id]).toString()}/view`);
@@ -101,10 +110,10 @@ function DogInfoComponent({
             </View>
             <View position={"absolute"} top={0} right={0} padding={"static-size-200"}>
                 {
-                    loadingState ? <ProgressCircle size={"S"} aria-label="Loading…" value={50} isIndeterminate/> :
+                    loadingState ? <ProgressCircle size={"S"} aria-label="Loading…" value={50} isIndeterminate /> :
                         <div role={'button'} onClick={toggleHeartState}
-                             className={`heart-button ${(favImg) ? 'active' : ''}`}>
-                            <Heart size={'L'}/>
+                            className={`heart-button ${(favImg) ? 'active' : ''}`}>
+                            <Heart size={'L'} />
                         </div>
                 }
             </View>
